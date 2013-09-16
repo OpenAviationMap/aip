@@ -112,6 +112,7 @@ TEMPLATE_DIRS = (
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
     '/usr/local/lib/python2.7/dist-packages/django/contrib/gis/templates',
+    '/home/lysgaard/prog/python/aip/templates',
 )
 
 INSTALLED_APPS = (

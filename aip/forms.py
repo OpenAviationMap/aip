@@ -2,7 +2,7 @@ from models import Airspace
 from django import forms
 from django.forms import ModelForm
 
-class AirspaceForm(ModelForm)
+class AirspaceForm(ModelForm):
     geometry = forms.CharField()
     class Meta:
         model = Airspace
@@ -10,3 +10,7 @@ class AirspaceForm(ModelForm)
 class MultiPolygonField(forms.CharField):
     def clean(self, value):
         value = super(self,forms.CharField).clean(self, value)
+
+class BatchDataForm(forms.Form):
+    data = forms.CharField(widget=forms.Textarea)
+    data_type = forms.CharField()
