@@ -1,6 +1,10 @@
-from models import Airspace
+from models import Airspace, Country
 from django import forms
 from django.forms import ModelForm
+
+class OsmXmlForm(forms.Form):
+    country = forms.ModelChoiceField(Country.objects)
+    osm_xml = forms.FileField()
 
 class AirspaceForm(ModelForm):
     geometry = forms.CharField()

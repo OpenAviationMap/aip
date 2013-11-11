@@ -2,6 +2,7 @@ from django.contrib.gis.db import models
 
 class Feature(models.Model):
     name = models.CharField(max_length=124)
+    remarks = models.CharField(max_length=255)
     objects = models.GeoManager()
 
     class Meta:
@@ -10,8 +11,13 @@ class Feature(models.Model):
     def __unicode__(self):
         return self.name
 
+    @classmethod
+    def lookup(cls, obj):
+        if obj.get('id',False):
+            cls.objects.get
+
 class Icao(models.Model):
-    icao = models.CharField(max_length=4, primary_key=True)
+    icao = models.CharField(max_length=4)
     objects = models.GeoManager()
 
     class Meta:
@@ -45,14 +51,14 @@ class Country(Feature):
     code = models.CharField(max_length=2, primary_key=True)
 
 class Airspace(Feature):
-    country = models.OneToOneField(Country)
+    country = models.ForeignKey(Country)
     geometry = models.MultiPolygonField()
     lower = models.ForeignKey(Height, related_name='airspace_lower', verbose_name='airspace lower height')
     upper = models.ForeignKey(Height, related_name='airspace_upper', verbose_name='airspace upper height')
 
 class Aerodrome(Feature, Icao):
     point = models.PointField()
-    country = models.OneToOneField(Country)
+    country = models.ForeignKey(Country)
     elevation = models.ForeignKey(Height)
 
 class Runway(Feature):
@@ -63,7 +69,12 @@ class Runway(Feature):
     elevation = models.ForeignKey(Height)
 
 class Navaid(Feature):
-    country = models.OneToOneField(Country)
+    country = models.ForeignKey(Country)
     identifier = models.CharField(max_length=32)
     point = models.PointField()
-    elevation = models.ForeignKey(Height)
+
+class Frequency(models.Model):
+    use = models.CharField(max_length=10)
+    freq = models.CharField(max_length=32)
+    navaid = models.ForeignKey(Navaid)
+
